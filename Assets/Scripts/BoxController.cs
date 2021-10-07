@@ -15,7 +15,9 @@ public class BoxController : MonoBehaviour
         if (collision.tag == "Player")
         {
             GameController.Instance.IncreaseScore();
+            BoxSpawner.Instance.BoxDestroyed();
             Destroy(gameObject);
         }
     }
+    
 }
