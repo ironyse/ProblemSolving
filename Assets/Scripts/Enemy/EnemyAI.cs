@@ -11,16 +11,18 @@ public class EnemyAI : MonoBehaviour
 
     [SerializeField] private Transform player;
     [SerializeField] private Transform firepoint;
-    [SerializeField] private GameObject laserPrefab;
 
+    public string projectileTag = "Laser";
     public float laserForce = 0.5f;
     public float shootDelay;
     private float _shootTimer;
 
+    ObjectPooler objPooler;
     Vector2 targetRandomPosition;
 
     private void Start()
     {
+        objPooler = ObjectPooler.Instance;
         player = GameObject.FindGameObjectWithTag("Player").transform;
         targetRandomPosition = GetRandomPosition();
     }
@@ -80,9 +82,9 @@ public class EnemyAI : MonoBehaviour
     {
         if (_shootTimer <= 0f)
         {
-            GameObject laser = Instantiate(laserPrefab, firepoint.position, firepoint.rotation);
-            Rigidbody2D rbLaser = laser.GetComponent<Rigidbody2D>();
-            rbLaser.AddForce(firepoint.up * laserForce, ForceMode2D.Impulse);
+            GameObject laser = objPooler.SpawnFromPool(projectileTag, firepoint.position, firepoint.rotation);
+            Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
+            rb.AddForce(firepoint.up * laserForce, ForceMode2D.Impulse);
 
             _shootTimer = shootDelay;
         }

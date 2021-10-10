@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class PlayerShipController : MonoBehaviour
 {
-    private Rigidbody2D rb;
-    private CapsuleCollider2D capColl;
+    private Rigidbody2D rb;    
 
     [SerializeField] private float moveSpeed = 10f;
 
@@ -14,8 +13,7 @@ public class PlayerShipController : MonoBehaviour
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        capColl = GetComponent<CapsuleCollider2D>();
+        rb = GetComponent<Rigidbody2D>();        
     }
 
     private void Update()

@@ -5,9 +5,15 @@ using UnityEngine;
 public class PlayerShipShoot : MonoBehaviour
 {
     [SerializeField] private Transform firepoint;
-    [SerializeField] private GameObject laserPrefab;
 
-    public float laserForce = 10f;
+    public string projectileTag = "Laser";
+    public float projectileForce = 10f;
+    ObjectPooler objPooler;
+
+    private void Start()
+    {
+        objPooler = ObjectPooler.Instance;
+    }
 
     private void Update()
     {
@@ -19,8 +25,8 @@ public class PlayerShipShoot : MonoBehaviour
 
     private void Shoot()
     {
-        GameObject laser = Instantiate(laserPrefab, firepoint.position, firepoint.rotation);
+        GameObject laser = objPooler.SpawnFromPool(projectileTag, firepoint.position, firepoint.rotation);
         Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
-        rb.AddForce(firepoint.up * laserForce, ForceMode2D.Impulse);
+        rb.AddForce(firepoint.up * projectileForce, ForceMode2D.Impulse);
     }
 }

@@ -18,9 +18,12 @@ public class GameController : MonoBehaviour
         }
     }
 
-    [SerializeField] private Text scoreText;
+    [SerializeField] private Text scoreText;    
     private int _score;
+    private float _scoreTimer;
 
+    public float scoreTimer;
+    private int enemyShipDestroyed;
 
     private void Start()
     {
@@ -29,12 +32,26 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        scoreText.text = $"Score: {_score}";
+        _scoreTimer -= Time.deltaTime;
+
+        if (_scoreTimer <= 0f)
+        {
+            IncreaseScore();
+            _scoreTimer = scoreTimer;
+        }
+
+        scoreText.text = $"Time Survived: {_score} Second(s)";
+        
     }
 
     public void IncreaseScore()
     {
         _score++;
+    }
+
+    public void EnemyShipDestoyed()
+    {
+        enemyShipDestroyed++;
     }
 
 }

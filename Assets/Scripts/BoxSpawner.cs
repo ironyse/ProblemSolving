@@ -5,10 +5,10 @@ using UnityEngine;
 public class BoxSpawner : MonoBehaviour
 {
     [SerializeField] private int cellSizeX = 9;
-    [SerializeField] private int cellSizeY = 5;
-    [SerializeField] private Transform[] boxes;
+    [SerializeField] private int cellSizeY = 5;    
     [SerializeField] private float spawnDelay = 3f;
 
+    #region Singleton
     private static BoxSpawner _instance;
     public static BoxSpawner Instance
     {
@@ -20,16 +20,20 @@ public class BoxSpawner : MonoBehaviour
             return _instance;
         }
     }
-    public LayerMask objectsLayer;
+    #endregion
+    
+    ObjectPooler objPooler;
 
-    //private Transform[] _boxesPool;
+    public LayerMask objectsLayer;
+    public string boxTag = "Shield";
     private float offset = 0.5f;
-    private int minBoxes = 4;
-    private int maxBoxes = 9;
+    private int minAmount = 4;
+    private int maxAmount = 8;
 
     private void Start()
     {
-        int rand = Random.Range(minBoxes, maxBoxes);
+        objPooler = ObjectPooler.Instance;
+        int rand = Random.Range(minAmount, maxAmount);
 
         for (int i = 0; i < rand; i++)
         {
@@ -39,9 +43,6 @@ public class BoxSpawner : MonoBehaviour
 
     public void GenerateBox()
     {        
-        int randIndex = Random.Range(0, boxes.Length);
-        Transform box = boxes[randIndex];
-
         float xPosition = Random.Range(-cellSizeX, cellSizeX) + offset;
         float yPosition = Random.Range(-cellSizeY, cellSizeY) + offset;
         Vector2 point = new Vector2(xPosition, yPosition);
@@ -54,7 +55,7 @@ public class BoxSpawner : MonoBehaviour
         }
         else
         {
-            Instantiate(box.gameObject, point, Quaternion.identity);
+            objPooler.SpawnFromPool(boxTag, point, Quaternion.identity);            
         }
 
     }

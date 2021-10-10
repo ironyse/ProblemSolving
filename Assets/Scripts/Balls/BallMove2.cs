@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BallMove2 : MonoBehaviour
 {    
-    private float _constantSpeed = 10f;    
+    private float _constantSpeed = 5f;    
 
     private void Update()
     {
