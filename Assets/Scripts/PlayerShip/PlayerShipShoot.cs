@@ -18,6 +18,8 @@ public class PlayerShipShoot : MonoBehaviour
 
     private void Update()
     {
+        if (GameController.Instance.IsGameOver) return;
+
         if (Input.GetButtonDown("Fire1"))
         {
             Shoot();

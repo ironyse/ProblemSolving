@@ -15,6 +15,10 @@ public class PlayerShipController : MonoBehaviour
 
     private int shieldAmount;
     private int maxShieldAmount = 100;
+    private float _shieldDecayTimer;
+
+    public int shieldDecayAmount;
+    public float shieldDecayTime;
 
     private void Start()
     {
@@ -23,12 +27,22 @@ public class PlayerShipController : MonoBehaviour
 
     private void Update()
     {
+        if (GameController.Instance.IsGameOver) return;
+
         velocity.x = Input.GetAxis("Horizontal");
         velocity.y = Input.GetAxis("Vertical");
         velocity = Vector2.ClampMagnitude(velocity * moveSpeed, moveSpeed);
 
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         shieldText.text = $"Shield: {shieldAmount} %";
+
+        _shieldDecayTimer -= Time.deltaTime;
+        if (_shieldDecayTimer <= 0f && shieldAmount > shieldDecayAmount)
+        {
+            DecreaseShield(shieldDecayAmount);
+            _shieldDecayTimer = shieldDecayTime;
+        }
+
     }
 
     private void FixedUpdate()
@@ -44,9 +58,9 @@ public class PlayerShipController : MonoBehaviour
     {
         shieldAmount += amount;
         PlayerAudioController.Instance.PlayShieldUp();
-        if (shieldAmount > 100)
+        if (shieldAmount > maxShieldAmount)
         {
-            shieldAmount = 100;
+            shieldAmount = maxShieldAmount;
         }
     }
 
@@ -55,9 +69,14 @@ public class PlayerShipController : MonoBehaviour
         shieldAmount -= amount;
         if (shieldAmount < 0)
         {
+            shieldAmount = 0;
+            shieldText.text = $"Shield: {shieldAmount} %";
+
             // player ship destroyed
+            gameObject.SetActive(false);
 
             // game over            
+            GameController.Instance.GameOver();
         }
     }
 }

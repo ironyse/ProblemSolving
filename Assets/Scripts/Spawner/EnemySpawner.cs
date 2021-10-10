@@ -20,7 +20,9 @@ public class EnemySpawner : MonoBehaviour
     }
 
     private void Update()
-    {        
+    {
+        if (GameController.Instance.IsGameOver) return;
+
         spawnTimer -= Time.deltaTime;
         if (spawnTimer <= 0f)
         {
@@ -36,7 +38,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        int randInt = Random.Range(0, spawnLocations.Length-1);
+        int randInt = Random.Range(0, spawnLocations.Length);
         Transform spawnLocation = spawnLocations[randInt];
         objPooler.SpawnFromPool(enemyTag, spawnLocation.position, Quaternion.identity);
     }

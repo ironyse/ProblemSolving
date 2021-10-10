@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -25,16 +24,43 @@ public class GameController : MonoBehaviour
     private int _score;
     private float _scoreTimer;
 
-    public float scoreTimer;
     private int enemyShipDestroyed;
+    public float scoreTimer;
+
+    public AudioSource bgm;
+    public GameObject gameOverPanel;
+
+    public bool IsGameOver { get; private set; }
 
     private void Start()
     {
         _score = 0;
+        IsGameOver = false;
+        gameOverPanel.SetActive(false);
+    }
+
+    private void Awake()
+    {
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("Music");
+        if (objs.Length > 1)
+        {
+            Destroy(bgm.gameObject);
+        }
+
+        DontDestroyOnLoad(bgm.gameObject);
     }
 
     private void Update()
     {
+        if (IsGameOver) { 
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                RestartGame();
+            }
+
+            return;
+        }
+
         _scoreTimer -= Time.deltaTime;
 
         if (_scoreTimer <= 0f)
@@ -48,6 +74,21 @@ public class GameController : MonoBehaviour
         
     }
 
+    public void GameOver()
+    {
+        if (!IsGameOver)
+        {
+            gameOverPanel.SetActive(true);
+            IsGameOver = true;
+        }
+        
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
     public void IncreaseScore()
     {
         _score++;
@@ -57,5 +98,7 @@ public class GameController : MonoBehaviour
     {
         enemyShipDestroyed++;
     }
+
+
 
 }

@@ -31,6 +31,9 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
+        if (GameController.Instance.IsGameOver) return;
+
+
         float distance = Vector2.Distance(transform.position, player.position);
         _shootTimer -= Time.deltaTime;
 
