@@ -11,6 +11,9 @@ public class Projectile : MonoBehaviour
     Animator anim;    
     Vector2 shotLocation;
 
+    public string excludeTargetTag;
+    public int projectileDamage;
+
     private void Awake()
     {
         shotLocation = transform.position;
@@ -29,10 +32,19 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.isTrigger)
+        if (!collision.isTrigger && !collision.CompareTag(excludeTargetTag))
         {
             rb.velocity = new Vector2(0f, 0f);
             anim.SetTrigger("IsHit");
+
+            if (collision.tag == "Player")
+            {
+                collision.GetComponent<PlayerShipController>().DecreaseShield(projectileDamage);
+            } else if (collision.tag == "Enemy")
+            {
+                collision.GetComponent<Enemy>().DecreaseHealth(projectileDamage);
+            }
+
             StartCoroutine(SetProjectActive(false));
         }
 

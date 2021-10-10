@@ -14,8 +14,10 @@ public class EnemyAI : MonoBehaviour
 
     public string projectileTag = "Laser";
     public float laserForce = 0.5f;
+    public int projectileDamage = 25;
     public float shootDelay;
     private float _shootTimer;
+    
 
     ObjectPooler objPooler;
     Vector2 targetRandomPosition;
@@ -49,7 +51,7 @@ public class EnemyAI : MonoBehaviour
     {
         Vector2 aimDirection = (player.position - transform.position).normalized;
 
-        //enemy's sprite are facing down
+        //+90f becasue enemy's sprite are facing down
         float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg + 90f; 
         transform.eulerAngles = new Vector3(0, 0, angle);
     }
@@ -83,14 +85,17 @@ public class EnemyAI : MonoBehaviour
         if (_shootTimer <= 0f)
         {
             GameObject laser = objPooler.SpawnFromPool(projectileTag, firepoint.position, firepoint.rotation);
+            Projectile projectile = laser.GetComponent<Projectile>();
             Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
+
+            projectile.excludeTargetTag = "Enemy";
+            projectile.projectileDamage = projectileDamage;
             rb.AddForce(firepoint.up * laserForce, ForceMode2D.Impulse);
 
             _shootTimer = shootDelay;
         }
         
     }
-
 
     private Vector3 GetRandomPosition()
     {

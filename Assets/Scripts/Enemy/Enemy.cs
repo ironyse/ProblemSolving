@@ -4,15 +4,29 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public int maxHealth;
+    private int currentHealth;
+
+    private void Start()
     {
-        
+        currentHealth = maxHealth;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        
+        currentHealth = maxHealth;
     }
+
+    public void DecreaseHealth(int amount)
+    {
+        currentHealth -= amount;
+        if (currentHealth < 0)
+        {
+            // destroy enemy's ship
+            gameObject.SetActive(false);
+            GameController.Instance.DestroyEnemyShip();
+        }
+    }
+
+
 }
