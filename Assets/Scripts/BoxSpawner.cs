@@ -6,9 +6,20 @@ public class BoxSpawner : MonoBehaviour
 {
     [SerializeField] private int cellSizeX = 9;
     [SerializeField] private int cellSizeY = 5;
-
     [SerializeField] private Transform[] boxes;
+    [SerializeField] private float spawnDelay = 3f;
 
+    private static BoxSpawner _instance;
+    public static BoxSpawner Instance
+    {
+        get
+        {
+            if (_instance == null) {
+                _instance = FindObjectOfType<BoxSpawner>();
+            }
+            return _instance;
+        }
+    }
     public LayerMask objectsLayer;
 
     //private Transform[] _boxesPool;
@@ -26,8 +37,8 @@ public class BoxSpawner : MonoBehaviour
         }
     }
 
-    private void GenerateBox()
-    {
+    public void GenerateBox()
+    {        
         int randIndex = Random.Range(0, boxes.Length);
         Transform box = boxes[randIndex];
 
@@ -46,5 +57,16 @@ public class BoxSpawner : MonoBehaviour
             Instantiate(box.gameObject, point, Quaternion.identity);
         }
 
+    }
+
+    public void BoxDestroyed()
+    {
+        StartCoroutine(SpawnAfter(spawnDelay));
+    }
+
+    private IEnumerator SpawnAfter(float second)
+    {
+        yield return new WaitForSeconds(second);
+        GenerateBox();
     }
 }
