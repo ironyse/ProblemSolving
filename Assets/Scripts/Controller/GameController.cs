@@ -31,16 +31,22 @@ public class GameController : MonoBehaviour
     public GameObject gameOverPanel;
 
     public bool IsGameOver { get; private set; }
+    public bool isUsingTimer = false;
 
     private void Start()
     {
         _score = 0;
         IsGameOver = false;
-        gameOverPanel.SetActive(false);
+        if (gameOverPanel)
+        {
+            gameOverPanel.SetActive(false);
+        }
+        
     }
 
     private void Awake()
     {
+        if (bgm == null) return;
         GameObject[] objs = GameObject.FindGameObjectsWithTag("Music");
         if (objs.Length > 1)
         {
@@ -52,7 +58,7 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        if (IsGameOver) { 
+        if (IsGameOver) {
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 RestartGame();
@@ -61,16 +67,23 @@ public class GameController : MonoBehaviour
             return;
         }
 
-        _scoreTimer -= Time.deltaTime;
-
-        if (_scoreTimer <= 0f)
+        if (isUsingTimer)
         {
-            IncreaseScore();
-            _scoreTimer = scoreTimer;
+            _scoreTimer -= Time.deltaTime;
+            if (_scoreTimer <= 0f)
+            {
+                IncreaseScore();
+                _scoreTimer = scoreTimer;
+            }
         }
 
-        scoreText.text = $"Time Survived: {_score} Second(s)";
-        enemyDestroyedText.text = $"Enemy Destoyed: {enemyShipDestroyed}";
+        scoreText.text = $"Score: {_score}";
+
+        if (enemyDestroyedText != null)
+        {
+            enemyDestroyedText.text = $"Enemy Destoyed: {enemyShipDestroyed}";
+        }
+        
         
     }
 

@@ -710,6 +710,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1987350212, guid: bf415a0e417ea0045bc33a571d6063ef, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987350211, guid: bf415a0e417ea0045bc33a571d6063ef, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf415a0e417ea0045bc33a571d6063ef, type: 3}
 --- !u!1 &839467391
@@ -1063,6 +1071,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   boxTag: Shield
+  canRespawn: 1
 --- !u!4 &947810994
 Transform:
   m_ObjectHideFlags: 0
@@ -1283,6 +1292,7 @@ MonoBehaviour:
   scoreTimer: 1
   bgm: {fileID: 493811606}
   gameOverPanel: {fileID: 750567121}
+  isUsingTimer: 1
 --- !u!4 &1884798338
 Transform:
   m_ObjectHideFlags: 0
@@ -1365,7 +1375,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 1
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 2002975255}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -1374,7 +1384,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!224 &1897487972
 RectTransform:

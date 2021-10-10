@@ -25,10 +25,12 @@ public class BoxSpawner : MonoBehaviour
     ObjectPooler objPooler;
 
     public LayerMask objectsLayer;
-    public string boxTag = "Shield";
+    public string boxTag;
     private float offset = 0.5f;
     private int minAmount = 4;
     private int maxAmount = 8;
+
+    public bool canRespawn = true;
 
     private void Start()
     {
@@ -62,6 +64,8 @@ public class BoxSpawner : MonoBehaviour
 
     public void BoxDestroyed()
     {
+        if (!canRespawn) return; 
+
         StartCoroutine(SpawnAfter(spawnDelay));
     }
 

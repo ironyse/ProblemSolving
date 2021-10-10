@@ -30,7 +30,7 @@ public class ObjectPooler : MonoBehaviour
     }
     #endregion
 
-    void Start()
+    void Awake()
     {
         poolDictionary = new Dictionary<string, Queue<GameObject>>();
 
@@ -51,7 +51,7 @@ public class ObjectPooler : MonoBehaviour
     }
 
     public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
-    {
+    {           
         if (!poolDictionary.ContainsKey(tag))
         {
             return null;
